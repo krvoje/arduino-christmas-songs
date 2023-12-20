@@ -18,12 +18,12 @@ struct Song
 void play_single(Song&, int);
 //void play_multiple(Song);
 
-const uint8_t SPEAKER = 11;
+const uint8_t SPEAKER = 12;
 
 const int NUM_LEDS = 8;
 const int ALL_LEDS[NUM_LEDS] = {5, 4, 3, 2, A0, A1, A2, A3};
 
-const int twelve_tet[12] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494};
+const int twelve_tet[24] = {262/2, 277/2, 294/2, 311/2, 330/2, 349/2, 370/2, 392/2, 415/2, 440/2, 466/2, 494/2, 262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494};
 
 Note soprano;
 Note alto;
@@ -31,18 +31,18 @@ Note tenor;
 Note bass;
 
 Song adeste_fideles = {
-    .soprano = "a  | a+ e a       | b+  e+  | c#* b c#* d* | c#*+ b a | a+  g# f#   | g# a b c#*   | g#+ f#. e- | e+. x | e*+ d* c#* | d*+ c#*+ | b c#* a  b  | g#. f#- e  |a| a g# a b | a+ e c#* | c#* b c#* d* | c#*+ b c#* | d* c#* b a    | g#+ a b- d*- | c#*+ b.  a-    | a+  xxx\0",
-    .alto = "e  | e+ e e       | e+  e+  | e e e f#     | e+ e e   | c#  d# e d# | e+ e e       | e+ d#.  e- | e+. x | e   f# g# a| e+   e+  | f# f# f# f# | e+      e  |x| x++      | x+ x a   | a g# a b     | a+   g# a  | g# a   f# f#  | e+  e f#     | e    a   g#.a- | a+  xxx\0",
-    .tenor = "c#*| c#*+ c#* c#* | b+  b+  | a g# a a     | a+ g# g# | a+  b b     | b c#* b a-f#-| g# e  b a  | g#+.x | a+  b  c#* | b+   a+  | f# f# b  b  | b a g#     |x| x++      | x++      | x++          | x+   x  e* | d* e*  d* c#* | b+  a a      | a    c#* e* d* | c#*+xxx\0",
-    .bass = "a_ | a_+ a a      | g#+ g#+ | a e  a d     | e+ e  e  | f#+ b_ b_   | e c#  g#_ a_ | b_+   b_+  | e+. x | c#+ b_ a_  | g#_  a_  | d  d  d# d# | e+      e  |x| x++      | x++      | x++          | x+   x  a_ | b_ c#  d  d#  | e   d  c# d  | e+       e  e  | a_+ xxx\0",
+.soprano="a|a+ea|b+e+|c#*bc#*d*|c#*+ba|a+g#f#|g#abc#*|g#+f#.e-|e+.x|e*+d*c#*|d*+c#*+|bc#*ab|g#.f#-e|a|ag#ab|a+ec#*|c#*bc#*d*|c#*+bc#*|d*c#*ba|g#+ab-d*-|c#*+b.a-|a+xxx\0",
+.alto="e|e+ee|e+e+|eeef#|e+ee|c#d#ed#|e+ee|e+d#.e-|e+.x|ef#g#a|e+e+|f#f#f#f#|e+e|x|x++|x+xa|ag#ab|a+g#a|g#af#f#|e+ef#|eag#.a-|a+xxx\0",
+.tenor="c#*|c#*+c#*c#*|b+b+|ag#aa|a+g#g#|a+bb|bc#*ba-f#-|g#eba|g#+.x|a+bc#*|b+a+|f#f#bb|bag#|x|x++|x++|x++|x+xe*|d*e*d*c#*|b+aa|ac#*e*d*|c#*+xxx\0",
+.bass="a_|a_+aa|g#+g#+|aead|e+ee|f#+b_b_|ec#g#_a_|b_+b_+|e+.x|c#+b_a_|g#_a_|ddd#d#|e+e|x|x++|x++|x++|x+xa_|b_c#dd#|edc#d|e+ee|a_+xxx\0",
     .QUARTER = 500,
 };
 
 Song jingle_bells = {
-    .soprano = "d b a g | d+. d-d- | d b a g | e+. e-e- | e c* b a | f#+. d*-d*- | d*- x- d*- x- c* a | b+. d-d- | d b a g | d+. d-d- | d b a g | e+. e-e- | e c* b a | d*.d*- d* d*-d*- | e* d* c* a | g x d* x | b b b+ | b b b+ | b d* g. a- | b++ | c* c* c*.c*- | c* b b b-b- | b a a b | a x d* x | b b b+ | b b b+ | b d* g. a- | b++ | c* c* c*.c*- | c* b b b-b- | d* d* c* a | g+ x x | \0",
-    .alto    = "d d e d | d+. d-d- | d d d d | c++      | c e  d e | c++    \0",
-    .tenor = "\0",
-    .bass = "\0",
+.soprano="dbag|d+.d-d-|dbag|e+.e-e-|ec*ba|f#+.d*-d*-|d*-x-d*-x-c*a|b+.d-d-|dbag|d+.d-d-|dbag|e+.e-e-|ec*ba|d*.d*-d*d*-d*-|e*d*c*a|gxd*x|bbb+|bbb+|bd*g.a-|b++|c*c*c*.c*-|c*bbb-b-|baab|axd*x|bbb+|bbb+|bd*g.a-|b++|c*c*c*.c*-|c*bbb-b-|d*d*c*a|g+xx|\0",
+.alto="dddd|d+.d-d-|dddd|c+.x|ceee|d++|f#f#f#f#|g++|dddd|d++|dddd|c+xc|ceee|f#f#f#f#|f#f#f#f#|dxxx|ggg+|ggg+|ggd.f#-|g++|eee.e-|eggg-g-|gf#f#g|f#xxx|ggg+|ggg+|ggd.f#-|g++|eee.e-|eggg-g-|f#af#a|b+xx|\0",
+.tenor="bbbb|b+.b-b-|bbbb|g+.x|gggg|c*++|c*c*ad*|d*++|bbbb|b++|bbbb|g+xg|gggg|aaaa|c*c*c*c*|bxxx|d*d*d*+|d*d*d*+|d*d*b.-c*-|d*++|c*c*c*.c*-|c*d*d*d*-d*-|c#*c*#c#*c#*|d*xxx|d*d*d*+|d*d*d*+|d*d*b.-c*-|d*++|c*c*c*.c*-|c*d*d*d*-d*-|abac*#|g+xx|\0",
+.bass="gggg|g+.g-g-|gggg|c+.x|cccc|d++|dddd|g++|gggg|g++|gggg|c+xc|cccc|dddd|dddd|gxxx|ggg+|ggg+|ggg.g-|g++|ccc.c|gggg-g-|aaaa|d+xxx|ggg+|ggg+|ggg.g-|g++|ccc.c-|gggg-g-|dddd|g+xx|\0",
     .QUARTER = 300,
 };
 
@@ -66,8 +66,8 @@ void setup()
   pinMode(A0, INPUT);
   randomSeed(analogRead(0));
 
-  is_only_melody = false;random(0, 2) > 0;
-  chosen_song = jingle_bells;//songs[random(0, NUM_SONGS)];
+  is_only_melody = random(0, 2) > 0;
+  chosen_song = songs[random(0, NUM_SONGS)];
   diode = random(0, NUM_LEDS);
 }
 
@@ -274,8 +274,8 @@ void modify_note(Note &note, char modifier)
     note.frequency /= 2;
     break;
   case '-':
-    note.duration /= 2;
-    break;
+          note.duration /= 2;
+        break;
   case '.':
     note.duration = 3 * note.duration / 2;
     break;
@@ -286,7 +286,7 @@ void modify_note(Note &note, char modifier)
 
 bool is_note(char c)
 {
-  switch (c)
+  switch (tolower(c))
   {
   case 'a':
   case 'b':
@@ -306,20 +306,34 @@ int note_twelve_tet_index(char c)
 {
   switch (c)
   {
-  case 'c':
+  case 'C':
     return 0;
-  case 'd':
+  case 'D':
     return 2;
-  case 'e':
+  case 'E':
     return 4;
-  case 'f':
+  case 'F':
     return 5;
-  case 'g':
+  case 'G':
     return 7;
-  case 'a':
+  case 'A':
     return 9;
-  case 'b':
+  case 'B':
     return 11;
+  case 'c':
+    return 12;
+  case 'd':
+    return 14;
+  case 'e':
+    return 16;
+  case 'f':
+    return 17;
+  case 'g':
+    return 19;
+  case 'a':
+    return 21;
+  case 'b':
+    return 23;
   default:
     return 0;
   }
