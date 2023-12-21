@@ -31,27 +31,37 @@ Note tenor;
 Note bass;
 
 Song adeste_fideles = {
-.soprano="a|a+ea|b+e+|c#*bc#*d*|c#*+ba|a+g#f#|g#abc#*|g#+f#.e-|e+.x|e*+d*c#*|d*+c#*+|bc#*ab|g#.f#-e|a|ag#ab|a+ec#*|c#*bc#*d*|c#*+bc#*|d*c#*ba|g#+ab-d*-|c#*+b.a-|a+xxx\0",
-.alto="e|e+ee|e+e+|eeef#|e+ee|c#d#ed#|e+ee|e+d#.e-|e+.x|ef#g#a|e+e+|f#f#f#f#|e+e|x|x++|x+xa|ag#ab|a+g#a|g#af#f#|e+ef#|eag#.a-|a+xxx\0",
-.tenor="c#*|c#*+c#*c#*|b+b+|ag#aa|a+g#g#|a+bb|bc#*ba-f#-|g#eba|g#+.x|a+bc#*|b+a+|f#f#bb|bag#|x|x++|x++|x++|x+xe*|d*e*d*c#*|b+aa|ac#*e*d*|c#*+xxx\0",
-.bass="a_|a_+aa|g#+g#+|aead|e+ee|f#+b_b_|ec#g#_a_|b_+b_+|e+.x|c#+b_a_|g#_a_|ddd#d#|e+e|x|x++|x++|x++|x+xa_|b_c#dd#|edc#d|e+ee|a_+xxx\0",
+.soprano="aa+eab+e+c#*bc#*d*c#*+baa+g#f#g#abc#*g#+f#.e-e+.xe*+d*c#*d*+c#*+bc#*abg#.f#-eaag#aba+ec#*c#*bc#*d*c#*+bc#*d*c#*bag#+ab-d*-c#*+b.a-a+xxx\0",
+.alto="ee+eee+e+eeef#e+eec#d#ed#e+eee+d#.e-e+.xef#g#ae+e+f#f#f#f#e+exx++x+xaag#aba+g#ag#af#f#e+ef#eag#.a-a+xxx\0",
+.tenor="c#*c#*+c#*c#*b+b+ag#aaa+g#g#a+bbbc#*ba-f#-g#ebag#+.xa+bc#*b+a+f#f#bbbag#xx++x++x++x+xe*d*e*d*c#*b+aaac#*e*d*c#*+xxx\0",
+.bass="a_a_+aag#+g#+aeade+eef#+b_b_ec#g#_a_b_+b_+e+.xc#+b_a_g#_a_ddd#d#e+exx++x++x++x+xa_b_c#dd#edc#de+eea_+xxx\0",
     .QUARTER = 500,
 };
 
 Song jingle_bells = {
-.soprano="dbag|d+.d-d-|dbag|e+.e-e-|ec*ba|f#+.d*-d*-|d*-x-d*-x-c*a|b+.d-d-|dbag|d+.d-d-|dbag|e+.e-e-|ec*ba|d*.d*-d*d*-d*-|e*d*c*a|gxd*x|bbb+|bbb+|bd*g.a-|b++|c*c*c*.c*-|c*bbb-b-|baab|axd*x|bbb+|bbb+|bd*g.a-|b++|c*c*c*.c*-|c*bbb-b-|d*d*c*a|g+xx|\0",
-.alto="dddd|d+.d-d-|dddd|c+.x|ceee|d++|f#f#f#f#|g++|dddd|d++|dddd|c+xc|ceee|f#f#f#f#|f#f#f#f#|dxxx|ggg+|ggg+|ggd.f#-|g++|eee.e-|eggg-g-|gf#f#g|f#xxx|ggg+|ggg+|ggd.f#-|g++|eee.e-|eggg-g-|f#af#a|b+xx|\0",
-.tenor="bbbb|b+.b-b-|bbbb|g+.x|gggg|c*++|c*c*ad*|d*++|bbbb|b++|bbbb|g+xg|gggg|aaaa|c*c*c*c*|bxxx|d*d*d*+|d*d*d*+|d*d*b.-c*-|d*++|c*c*c*.c*-|c*d*d*d*-d*-|c#*c*#c#*c#*|d*xxx|d*d*d*+|d*d*d*+|d*d*b.-c*-|d*++|c*c*c*.c*-|c*d*d*d*-d*-|abac*#|g+xx|\0",
-.bass="gggg|g+.g-g-|gggg|c+.x|cccc|d++|dddd|g++|gggg|g++|gggg|c+xc|cccc|dddd|dddd|gxxx|ggg+|ggg+|ggg.g-|g++|ccc.c|gggg-g-|aaaa|d+xxx|ggg+|ggg+|ggg.g-|g++|ccc.c-|gggg-g-|dddd|g+xx|\0",
-    .QUARTER = 300,
+.soprano="dbagd+.d-d-dbage+x+ec*baf#++d*d*c*ab+x+dbagd++dbage+xeec*bad*d*d*d*e*d*c*agxd*+bbb+bbb+bd*g.a-b+x+c*c*c*.c*-c*bbb-b-baaba+d*xbbb+bbb+bd*g.a-b+x+c*c*c*.c*-c*bbb-b-d*d*c*agxxx\0",
+.alto   ="ddddd+.d-d-ddddc+x+ceeed++f#f#f#f#g+x+ddddd++ddddc+xcceeef#f#f#f#f#f#f#f#dxxxggg+ggg+ggd.f#-g+x+eee.e-eeeg-g-gf#f#gf#+.xggg+ggg+ggd.f#-g+x+eee.e-eggg-g-f#gf#agxxx\0",
+.tenor  ="bbbbb+.b-b-bbbbg+x+ggggc*++c*c*ad*d*+x+bbbbb++bbbbg+xgggggaaaac*c*c*c*bxxxd*d*d*+d*d*d*+d*d*b.c*-d*+x+c*c*c*.c*-c*d*d*d*-d*-c#*c#*c#*c#*d*+.xd*d*d*+d*d*d*+d*d*b.c#*-d*+x+c*c*c*.c*-c*d*d*d*-d*-abac*bxxx\0",
+.bass   ="ggggg+.g-g-ggggc+x+ccccd++ddddg+x+ggggg++ggggc+xcccccddddddddgxxxggg+ggg+ggg.g-g+x+ccc.c-gggg-g-aaaad+.xggg+ggg+ggg.g#-g+x+ccc.c-gggg-g-ddddgxxx\0",
+.QUARTER = 300,
+};
+
+Song silent_night = {
+.soprano="f.g-fd+.f.g-fd+.c*+c*a+.b'+b'f+.g+gb'.a-gf.g-fd+.g+gb'.a-gf.g-fd+.c*+c*e'*.c*-ab'+.d*+. b'.f-df.e'-cb'_++.\0",
+.alto="d.e'-db'_+.d.e'-db'_+.e'+e'e'+.d+dd+.e'+e'g.f-e'd.e'-db'_+.e'+e'g.f-e'd.e'-db'_+.f+ff.f-ff++.b'_+b'_a_.a_-a_b'_++\0",
+.tenor="f+ff+.f+ff+.a+ac*+.b'+b'b'+.b'+b'b'.b'-b'b'.b'-b'b'+.b'+b'b'.b'-b'b'.b'-b'b'+.a+aa.a-e'*d*+.b'+.f+ff.f-fd++\0",
+.bass="b'_+b'_b'_+.b'_+b'_b'_+.f+ff+.b'_+b'_b'_+.e'+e'e'.e'-e'b'_.b'_-b'_b'_+.e'+e'e'.e'-e'b'_.b'_-b'_b'_+.f+ff.f-fb'_++.d+b'_f_.f_-f_b'_++\0",
+.QUARTER = 250,
 };
 
 auto is_only_melody = true;
 
-const auto NUM_SONGS = 2;
+const auto NUM_SONGS = 3;
 Song songs[NUM_SONGS] = {
     adeste_fideles,
-    jingle_bells};
+    jingle_bells,
+    silent_night,
+    };
 
 Song &chosen_song = adeste_fideles;
 int diode;
@@ -66,8 +76,8 @@ void setup()
   pinMode(A0, INPUT);
   randomSeed(analogRead(0));
 
-  is_only_melody = random(0, 2) > 0;
   chosen_song = songs[random(0, NUM_SONGS)];
+  is_only_melody = random(0, 2) > 0;
   diode = random(0, NUM_LEDS);
 }
 
@@ -109,16 +119,19 @@ void toggle_diode(int pin, uint8_t color)
 
 void play_single(Song &song)
 {
+  //soprano.position=-1;
   alto.position = -1;
   tenor.position = -1;
   bass.position = -1;
-  if (soprano.duration > 0)
+
+  auto &part = soprano;
+  if (part.duration > 0)
   {
-    if (soprano.frequency > 0)
-      tone(SPEAKER, soprano.frequency);
-    delay(soprano.duration);
+    if (part.frequency > 0)
+      tone(SPEAKER, part.frequency);
+    delay(part.duration);
     noTone(SPEAKER);
-    soprano.duration = 0;
+    part.duration = 0;
   }
 }
 
