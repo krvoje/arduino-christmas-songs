@@ -1,6 +1,6 @@
 #define SPEAKER 11
 #define NUM_LEDS 8
-#define NUM_SONGS 3
+#define NUM_SONGS 6
 #define NEUMA 500 / 4
 
 struct Note
@@ -8,7 +8,6 @@ struct Note
   int frequency;
   int current_duration;
   int remaining;
-  const char *repetition_start;
   const char *current;
 };
 
@@ -34,10 +33,10 @@ Note bass;
 
 bool is_single_note;
 
-const char adeste_fideles_soprano[] PROGMEM = "2g4g2dg4ad2babc*4b2ag4g2f#ef#gab4f#3e1d8d4d*2c*b4c*b2abga3f#1e2dggf#ga4g2dbbabc*4b2abc*bag4f#2g1bc*4b3a1g8g\0";
-const char adeste_fideles_alto[] PROGMEM = "2d4d2de4f#A2gf#ge4d2f#e4e2dcdef#d4d3c#1d8A4g2ag4ed2ddBc3d1c#2Addded4d2Bggf#de4d2f#eegf#e4d2e1f#g4d3f#1d8d\0";
-const char adeste_fideles_tenor[] PROGMEM = "2b4b2ab4d*f#2gagg4g2ab4b2ag4ag8f#4b2c*e*4gg2f#gegaaf#bbaba4g2gd*d*d*bc*4b2aggbac*4a2gg4b3a1c*8b\0";
-const char adeste_fideles_bass[] PROGMEM = "2g4g2f#e4dd2ddec4B2de4e2f#gAddB4ce8d4d2ee4cA2dBBcdeAdgdef#4B2dggf#gg4g2decdde4d2ce4g3d1f#8g\0";
+const char adeste_fideles_soprano[] PROGMEM = "2a4a2ea4be2c#*bc#*d*4c#*2ba4a2g#f#g#abc#*4g#2f#1e8e4e*2d*c#*4d*c#*2bc#*ab2g#1f#12e2aag#ab4a2ec#*c#*bc#*d*4c#*2bc#*d*c#*ba4g#2ad*4c#*3b1a6a\0";
+const char adeste_fideles_alto[] PROGMEM = "2e4e2ec#4ee2eeef#4e2ec#c#d#ed#eeee4e3d#1e8e4e1f#g#2af#g#4a2eef#f#4e2e2x8xxx6x2a1f#g#2aed#4e2ef#4e3e1c#6c#\0";
+const char adeste_fideles_tenor[] PROGMEM = "2c#*4c#*2aa4g#b2abaa4a2g#a4a2bbec#g#f#4b3a1g#8g#4c#*2d*e*4d*e*2e*ac#*d*3b1a2g#x8xxx6x2e*d*e*bb4baa3g#1a6a\0";
+const char adeste_fideles_bass[] PROGMEM = "2A4A2c#A4eg#2ag#ad4e2ef#4f#2eBBAG#A4B3B1e8e4c#*2ba4ba2g#af#d4e2wx8xxx6x2abag#f#2edc#d4e3e1A6A\0";
 
 const char mehki_snezek_soprano[] PROGMEM =
     "1Gdgb Gdgb Gdgb GBgd* Acf#d* cdc*f# bGdg 4x 1gGBd GCga Gdbd* GBgb F#df#b cdaf# GBdg 4x|1Gdgb Bdf#b Begb Bdgd* Acf#d* cdc*f# Gdbg GBdg 1Gdbd GCga Gdbd* GBgb F#df#b cdaf# GBdg 4x| 2d*gab 1e*g#2d* 1c*e2b 2c*eab 1d*f#2c* 1bd2a 2bdga 1c*e2b 1ac2g 2aF#A1ef# 8d 1gBaA bGc*e bGdg aF#A1cd 2d*gab 1e*g#2d* 1c*e2b 2c*eab 1d*f#2c* 1bd2a 2bdga 1c*e2b 1ac2g 2aF#A 1f#e 8d 2gBaA bGc*e bGdg aF#A1cd 1GABd 6g \0";
@@ -52,9 +51,33 @@ const char first_noel_bass[] PROGMEM =
     "1ag2gfd4c2c4d2f3e1d2cf1ed2defg3f1e2B4c2e4d2B4e2e4B2f6g2aef1ag2fc1ce2fe4c2c4f2d4c2A4B2d3e1d2cdcBABcFAG4c\0";
 
 const char jingle_bells_soprano[] PROGMEM =
-    "\0";
+    "2dbag6d1dd2dbag4ex2ec*ba8f#2d*d*c*a4bx2dbag8d2dbag4e2xeec*bad*d*d*d*e*d*c*agx4d*2bb4b2bb4b2bd*3g1a4bx2c*c*3c*1c*2c*bb1bb2baab4a2d*xbb4b2bb4b2bd*3g1a4bx2c*c*3c*1c*2c*bb1bb2d*d*c*ag6x\0";
+const char jingle_bells_alto[] PROGMEM =
+    "2dddd6d1dd2dddd4cx2ceee8d2f#f#f#f#4gx2dddd8d2dddd4c2xcceeef#f#f#f#f#f#f#f#4dx2gg4g2gg4g2gg3d1f#4gx2ee3e1e2egg1gg2gf#f#e6f#2x2gg4g2gg4g2gg3d1f#4gx2ee3e1e2egg1gg2f#gf#ag6x\0";
+const char jingle_bells_tenor[] PROGMEM =
+    "2bbbb6b1bb2bbbb4gx2gggg8c*2c*c*ad*4d*x2bbbb8b2bbbb4g2xgggggaaaac*c*c*c*4bx2d*d*4d*2d*d*4d*2d*d*3b1c*4d*x2c*c*3c*1c*2c*d*d*1d*d*2c#*c#*c#*c#*6d*2x2d*d*4d*2d*d*4d*2d*d*3b1c*4d*x2c*c*3c*1c*2c*d*d*1d*d*2abac*d*6x\0";
+const char jingle_bells_bass[] PROGMEM =
+    "2gggg6g1gg2gggg4cx2cccc8d2dddd4gx2gggg8g2gggg4c2xcccccdddddddd4gx2gg4g2gg4g2gg3g1g4gx2cc3c1c2ggg1gg2aaaa6d2x2gg4g2gg4g2gg3g1g4gx2cc3c1c2ggg1gg2ddddg6x\0";
 
-const Song songs[] PROGMEM = {
+const char silent_night_soprano[] PROGMEM =
+    "3f1g2f6d3f1g2f6d4c*2c*6a4b'2b'6f4g2g3b'1a2g3f1g2f6d4g2g3b'1a2g3f1g2f6d4c*2c*3e'*1c*2a6b'd*2b'fd3f1e'2c8B'x\0";
+const char silent_night_alto[] PROGMEM =
+    "3d1e'2d6B'3d1e'2d6B'4e'2e'6e'4d2d6d4e'2e'3g1f2e'3d1e'2d6B'4e'2e'3g1f2e'3d1e'2d6B'4f2f3f1f2f6ff2B'fB'3A1A2A8B'x\0";
+const char silent_night_tenor[] PROGMEM =
+    "4f2f6f4f2f6f4a2a6c*4b'2b'6b'4b'2b'4b'2b'3b'1b'2b'6b'4b'2b'3b'1b'2b'3b'1b'2b'6b'4a2a3a1a2e'*6e'*b'4f2f3f1f2f8dx\0";
+const char silent_night_bass[] PROGMEM =
+    "4B'2B'6B'4B'2B'6B'4f2f6f4B'2B'6B'4e'2e'4e'2e'3B'1B'2B'6B'4e'2e'3e'1e'2e'3B'1B'2B'6B'4f2f3f1f2f6b'b'4d2B3F1F2F8Bx\0";
+
+const char veselje_ti_navjescujem_soprano[] PROGMEM =
+    "2ad*c#*b3a1b2ag1f#ef#g2ac#8d2ad*c#*b3a1b2ag1f#ef#g2ac#8d2f#aeef#aeea1ab2agf#1f#g2f#ea1ab2agf#1f#g2f#e3f#1g2f#e4de3f#1g2f#e8d\0";
+const char veselje_ti_navjescujem_alto[] PROGMEM =
+    "2f#1f#g2agf#gf#e2dcde2c#c#8A2f#1f#g2agf#gf#e2dcde2c#c#8A2f#d#Bc#f#d#Bc#ddc#edddc#ddc#edddc#3d1d2c#c#4B2Bc#3d1d2c#c#8A\0";
+const char veselje_ti_navjescujem_tenor[] PROGMEM =
+    "2d*aabc#*c#*1d*c#*2bbb3a1g8f#2d*aabc#*c#*1d*c#*2bbb3a1g8f#2a1ba2ga2a1ba2ga2f#1f#g2aa2a1ab2aa2f#1f#g2aaabba3a1b2ag4f#2ga3a1b2ag8f#\0";
+const char veselje_ti_navjescujem_bass[] PROGMEM =
+    "2ddf#gae1dd#2e2beaA8d2ddf#gae1dd#2e2beaA8d1dc#2Be1Ac#dc#2BeAf#f#Ac#dd1df#2addAc#1dc2BG#A3d1d2AA#4B2eA3d1G2AA8d\0";
+
+const Song songs[NUM_SONGS] PROGMEM = {
     {
         // Adeste Fideles
         adeste_fideles_soprano,
@@ -66,11 +89,34 @@ const Song songs[] PROGMEM = {
         // Mehki snežek
         mehki_snezek_soprano,
     },
-    {// First Noel
-     first_noel_soprano,
-     first_noel_alto,
-     first_noel_tenor,
-     first_noel_bass},
+    {
+        // First Noel
+        first_noel_soprano,
+        first_noel_alto,
+        first_noel_tenor,
+        first_noel_bass,
+    },
+    {
+        // Jingle Bells
+        jingle_bells_soprano,
+        jingle_bells_alto,
+        jingle_bells_tenor,
+        jingle_bells_bass,
+    },
+    {
+        // Silent Night
+        silent_night_soprano,
+        silent_night_alto,
+        silent_night_tenor,
+        silent_night_bass,
+    },
+    {
+        // Veselje ti navješčujem
+        veselje_ti_navjescujem_soprano,
+        veselje_ti_navjescujem_alto,
+        veselje_ti_navjescujem_tenor,
+        veselje_ti_navjescujem_bass,
+    },
 };
 
 Song song;
@@ -119,48 +165,63 @@ void loop()
 
 void choose_song()
 {
-  auto old_song_index = song_index;
-  do
-  {
-    song_index = random(0, NUM_SONGS);
-    delete song.soprano;
-    delete song.alto;
-    delete song.tenor;
-    delete song.bass;
-    auto soprano_ptr = pgm_read_ptr(&songs[song_index].soprano);
-    auto alto_ptr = pgm_read_ptr(&songs[song_index].alto);
-    auto tenor_ptr = pgm_read_ptr(&songs[song_index].tenor);
-    auto bass_ptr = pgm_read_ptr(&songs[song_index].bass);
-    if (soprano_ptr != NULL)
-    {
-      song.soprano = malloc(300);
-      strcpy_P(song.soprano, (char *)soprano_ptr);
-    } else {
-      song.soprano = NULL;
-    }
-    if (alto_ptr != NULL)
-    {
-      song.alto = malloc(300);
-      strcpy_P(song.alto, (char *)alto_ptr);
-    } else {
-      song.alto = NULL;
-    }
-    if (tenor_ptr != NULL)
-    {
-      song.tenor = malloc(300);
-      strcpy_P(song.tenor, (char *)tenor_ptr);
-    } else {
-      song.tenor = NULL;
-    }
-    if (bass_ptr != NULL)
-    {
-      song.bass = malloc(300);
-      strcpy_P(song.bass, (char *)bass_ptr);
-    } else {
-      song.bass = NULL;
-    }
-  } while (song_index == old_song_index && NUM_SONGS > 1);
+  song_index = (song_index + 1) % NUM_SONGS;
   is_single_note = random(0, 2);
+  free(song.soprano);
+  free(song.alto);
+  free(song.tenor);
+  free(song.bass);
+  auto soprano_ptr = pgm_read_ptr(&songs[song_index].soprano);
+  auto alto_ptr = pgm_read_ptr(&songs[song_index].alto);
+  auto tenor_ptr = pgm_read_ptr(&songs[song_index].tenor);
+  auto bass_ptr = pgm_read_ptr(&songs[song_index].bass);
+  if (soprano_ptr != NULL)
+  {
+    song.soprano = (char *)malloc(calculate_size(soprano_ptr));
+    strcpy_P(song.soprano, (char *)soprano_ptr);
+  }
+  else
+  {
+    song.soprano = NULL;
+  }
+  if (alto_ptr != NULL)
+  {
+    song.alto = (char *)malloc(calculate_size(alto_ptr));
+    strcpy_P(song.alto, (char *)alto_ptr);
+  }
+  else
+  {
+    song.alto = NULL;
+  }
+  if (tenor_ptr != NULL)
+  {
+    song.tenor = (char *)malloc(calculate_size(tenor_ptr));
+    strcpy_P(song.tenor, (char *)tenor_ptr);
+  }
+  else
+  {
+    song.tenor = NULL;
+  }
+  if (bass_ptr != NULL)
+  {
+    song.bass = (char *)malloc(calculate_size(bass_ptr));
+    strcpy_P(song.bass, (char *)bass_ptr);
+  }
+  else
+  {
+    song.bass = NULL;
+  }
+}
+
+unsigned int calculate_size(byte *ptr)
+{
+  unsigned int size = 0;
+  while (pgm_read_byte(ptr) != '\0')
+  {
+    size++;
+    ptr++;
+  }
+  return size;
 }
 
 bool is_finished()
@@ -186,9 +247,9 @@ void play_single()
   bass.current = NULL;
 
   auto &part = soprano;
-  if (part.remaining > 0)
+  if (part.remaining)
   {
-    if (part.frequency > 0)
+    if (part.frequency)
       tone(SPEAKER, part.frequency);
     delay(part.remaining);
     noTone(SPEAKER);
@@ -201,52 +262,51 @@ void play_multiple()
 {
   auto shortest_remaining = shortest_positive(soprano.remaining, alto.remaining, tenor.remaining, bass.remaining);
 
-  auto number_of_notes = 0;
-  if (soprano.frequency > 0 && soprano.remaining > 0)
-    number_of_notes++;
-  if (alto.frequency > 0 && alto.remaining > 0)
-    number_of_notes++;
-  if (tenor.frequency > 0 && tenor.remaining > 0)
-    number_of_notes++;
-  if (bass.frequency > 0 && bass.remaining > 0)
-    number_of_notes++;
+  auto audible_notes = 0;
+  if (soprano.frequency && soprano.remaining)
+    audible_notes++;
+  if (alto.frequency && alto.remaining)
+    audible_notes++;
+  if (tenor.frequency && tenor.remaining)
+    audible_notes++;
+  if (bass.frequency && bass.remaining)
+    audible_notes++;
 
-  if (number_of_notes == 0)
-    delay(shortest_remaining);
-  else
+  auto DELAY = NEUMA / 4;
+  if(!audible_notes) delay(NEUMA);
+  else for (int remaining_in_strum = 0; remaining_in_strum < shortest_remaining; remaining_in_strum += DELAY * audible_notes)
   {
-    auto DELAY = min(NEUMA / 2, shortest_remaining);
-    for (int total_remaining_in_beat = 0; total_remaining_in_beat < shortest_remaining; total_remaining_in_beat += DELAY * number_of_notes)
+    if (bass.frequency && bass.remaining)
     {
-      if (bass.frequency > 0)
-      {
-        tone(SPEAKER, bass.frequency / 2);
-        delay(DELAY);
-      }
-      bass.remaining = max(0, bass.remaining - DELAY);
+      tone(SPEAKER, bass.frequency / 2);
+      delay(DELAY);
+    }
 
-      if (tenor.frequency > 0)
-      {
-        tone(SPEAKER, tenor.frequency / 2);
-        delay(DELAY);
-      }
-      tenor.remaining = max(0, tenor.remaining - DELAY);
-      if (alto.frequency > 0)
-      {
-        tone(SPEAKER, alto.frequency);
-        delay(DELAY);
-      }
-      alto.remaining = max(0, alto.remaining - DELAY);
-      if (soprano.frequency > 0)
-      {
-        tone(SPEAKER, soprano.frequency);
-        delay(DELAY);
-      }
-      soprano.remaining = max(0, soprano.remaining - DELAY);
+    if (tenor.frequency && tenor.remaining)
+    {
+      tone(SPEAKER, tenor.frequency / 2);
+      delay(DELAY);
+    }
+
+    if (alto.frequency && alto.remaining)
+    {
+      tone(SPEAKER, alto.frequency);
+      delay(DELAY);
+    }
+
+    if (soprano.frequency && soprano.remaining)
+    {
+      tone(SPEAKER, soprano.frequency);
+      delay(DELAY);
     }
   }
 
-  if (soprano.remaining <= 0 && alto.remaining <= 0 && tenor.remaining <= 0 && bass.remaining <= 0)
+  bass.remaining = max(0, bass.remaining - NEUMA);
+  tenor.remaining = max(0, tenor.remaining - NEUMA);
+  alto.remaining = max(0, alto.remaining - NEUMA);
+  soprano.remaining = max(0, soprano.remaining - NEUMA);
+
+  if (!soprano.remaining && !alto.remaining && !tenor.remaining && !bass.remaining)
   {
     noTone(SPEAKER);
   }
@@ -255,11 +315,11 @@ void play_multiple()
 int shortest_positive(int a, int b, int c, int d)
 {
   auto min = a;
-  if (b > 0 && b < min)
+  if (b && b < min)
     min = b;
-  if (c > 0 && c < min)
+  if (c && c < min)
     min = c;
-  if (d > 0 && d < min)
+  if (d && d < min)
     min = d;
   return min;
 }
@@ -302,7 +362,7 @@ void parse_next(Note &note)
       note.remaining = note.current_duration;
     }
     note.current++;
-  } while ((*note.current) != '\0' && note.remaining <= 0);
+  } while ((*note.current) != '\0' && !note.remaining);
 }
 
 bool is_note(const char *c)
@@ -315,152 +375,60 @@ bool is_note(const char *c)
 
 int twelve_tet_frequency(const char *c)
 {
-  char next = *(c + 1);
-  switch (*c)
+  bool is_sharp = *(c + 1) == '#';
+  bool is_flat = *(c + 1) == '\'';
+  bool is_octave_up = *(c + 1) == '*' || is_sharp && *(c + 2) == '*' || is_flat && *(c + 2) == '*';
+  bool is_octave_down = *(c + 1) == '_' || is_sharp && *(c + 2) == '_' || is_flat && *(c + 2) == '_';
+  bool is_low_octave = isupper(*c);
+
+  auto frequency = 0;
+  auto index = 0;
+  switch (tolower(*c))
   {
-  case 'C':
-    if (next == '#')
-      return twelve_tet[1] / 2;
-    if (next == '\'')
-      return twelve_tet[11] / 2;
-    if (next == '*')
-      return twelve_tet[0];
-    if (next == '_')
-      return twelve_tet[0] / 4;
-    return twelve_tet[0] / 2;
-  case 'D':
-    if (next == '#')
-      return twelve_tet[3] / 2;
-    if (next == '\'')
-      return twelve_tet[1] / 2;
-    if (next == '*')
-      return twelve_tet[2];
-    if (next == '_')
-      return twelve_tet[2] / 4;
-    return twelve_tet[2] / 2;
-  case 'E':
-    if (next == '#')
-      return twelve_tet[5] / 2;
-    if (next == '\'')
-      return twelve_tet[3] / 2;
-    if (next == '*')
-      return twelve_tet[4];
-    if (next == '_')
-      return twelve_tet[4] / 4;
-    return twelve_tet[4] / 2;
-  case 'F':
-    if (next == '#')
-      return twelve_tet[6] / 2;
-    if (next == '\'')
-      return twelve_tet[4] / 2;
-    if (next == '*')
-      return twelve_tet[5];
-    if (next == '_')
-      return twelve_tet[5] / 4;
-    return twelve_tet[5] / 2;
-  case 'G':
-    if (next == '#')
-      return twelve_tet[8] / 2;
-    if (next == '\'')
-      return twelve_tet[6] / 2;
-    if (next == '*')
-      return twelve_tet[7];
-    if (next == '_')
-      return twelve_tet[7] / 4;
-    return twelve_tet[7] / 2;
-  case 'A':
-    if (next == '#')
-      return twelve_tet[10] / 2;
-    if (next == '\'')
-      return twelve_tet[8] / 2;
-    if (next == '*')
-      return twelve_tet[9];
-    if (next == '_')
-      return twelve_tet[9] / 4;
-    return twelve_tet[9] / 2;
-  case 'B':
-    if (next == '#')
-      return twelve_tet[0];
-    if (next == '\'')
-      return twelve_tet[10] / 2;
-    if (next == '*')
-      return twelve_tet[11];
-    if (next == '_')
-      return twelve_tet[11] / 4;
-    return twelve_tet[11] / 2;
   case 'c':
-    if (next == '#')
-      return twelve_tet[1];
-    if (next == '\'')
-      return twelve_tet[11] / 2;
-    if (next == '*')
-      return twelve_tet[0] * 2;
-    if (next == '_')
-      return twelve_tet[0] / 2;
-    return twelve_tet[0];
+    index = 0;
+    break;
   case 'd':
-    if (next == '#')
-      return twelve_tet[3];
-    if (next == '\'')
-      return twelve_tet[1];
-    if (next == '*')
-      return twelve_tet[2] * 2;
-    if (next == '_')
-      return twelve_tet[2] / 2;
-    return twelve_tet[2];
+    index = 2;
+    break;
   case 'e':
-    if (next == '#')
-      return twelve_tet[5];
-    if (next == '\'')
-      return twelve_tet[3];
-    if (next == '*')
-      return twelve_tet[4] * 2;
-    if (next == '_')
-      return twelve_tet[4] / 2;
-    return twelve_tet[4];
+    index = 4;
+    break;
   case 'f':
-    if (next == '#')
-      return twelve_tet[6];
-    if (next == '\'')
-      return twelve_tet[4];
-    if (next == '*')
-      return twelve_tet[5] * 2;
-    if (next == '_')
-      return twelve_tet[5] / 2;
-    return twelve_tet[5];
+    index = 5;
+    break;
   case 'g':
-    if (next == '#')
-      return twelve_tet[8];
-    if (next == '\'')
-      return twelve_tet[6];
-    if (next == '*')
-      return twelve_tet[7] * 2;
-    if (next == '_')
-      return twelve_tet[7] / 2;
-    return twelve_tet[7];
+    index = 7;
+    break;
   case 'a':
-    if (next == '#')
-      return twelve_tet[10];
-    if (next == '\'')
-      return twelve_tet[8];
-    if (next == '*')
-      return twelve_tet[9] * 2;
-    if (next == '_')
-      return twelve_tet[9] / 2;
-    return twelve_tet[9];
+    index = 9;
+    break;
   case 'b':
-    if (next == '#')
-      return twelve_tet[0] * 2;
-    if (next == '\'')
-      return twelve_tet[10];
-    if (next == '*')
-      return twelve_tet[11] * 2;
-    if (next == '_')
-      return twelve_tet[11] / 2;
-    return twelve_tet[11];
-  default:
+    index = 11;
+    break;
+  case 'x':
     return 0;
+  default:
+    break;
   }
+
+  if (is_sharp)
+    index++;
+  if (is_flat)
+    index--;
+  frequency = twelve_tet[index % 12];
+  if (index < 0)
+    frequency /= 2;
+  if (index > 11)
+    frequency *= 2;
+  if (is_low_octave)
+    frequency /= 2;
+  if (is_octave_up)
+    frequency *= 2;
+  if (is_octave_down)
+    frequency /= 2;
+
+  return frequency;
 }
 
 bool is_number(const char *c)
@@ -486,8 +454,4 @@ void reset_playback()
   alto.current = song.alto;
   tenor.current = song.tenor;
   bass.current = song.bass;
-  soprano.repetition_start = NULL;
-  alto.repetition_start = NULL;
-  tenor.repetition_start = NULL;
-  bass.repetition_start = NULL;
 }
