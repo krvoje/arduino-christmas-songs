@@ -1,6 +1,7 @@
 #define SPEAKER 11
+#define BUTTON 6
 #define NUM_LEDS 8
-#define NUM_SONGS 6
+#define NUM_SONGS 9
 #define NEUMA 500 / 4
 
 struct Note
@@ -22,7 +23,7 @@ struct Song
 void play_single();
 void play_multiple();
 
-const int ALL_LEDS[NUM_LEDS] = {5, 4, 3, 2, A0, A1, A2, A3};
+const int ALL_LEDS[NUM_LEDS] = {5, 4, 3, 2, PIN_A0, PIN_A1, PIN_A2, PIN_A3};
 
 const int twelve_tet[12] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494};
 
@@ -77,6 +78,23 @@ const char veselje_ti_navjescujem_tenor[] PROGMEM =
 const char veselje_ti_navjescujem_bass[] PROGMEM =
     "2ddf#gae1dd#2e2beaA8d2ddf#gae1dd#2e2beaA8d1dc#2Be1Ac#dc#2BeAf#f#Ac#dd1df#2addAc#1dc2BG#A3d1d2AA#4B2eA3d1G2AA8d\0";
 
+const char u_to_vrijeme_godista_soprano[] PROGMEM =
+    "4f2c4d2c4d2e4f2x4f2c4d2c4d2e4f2x2fga4b'2b'b'ag4a2xagf4g2ggfe4f2xfga4b'2b'b'ag4a2xagf4g2ggfe4f2x\0";
+const char u_to_vrijeme_godista_alto[] PROGMEM =
+    "6xx4B'2B4A2x4A2A4B'2B'4B'2B'4A2x6xx4B'2B4A2x4A2A4B'2B'4B'2B'4A2x2dcfgfe4d2e4f2x4c2d4B'2B'4c2c4f2x\02dcfgfe4d2e4f2x4c2d4B'2B'4c2c4f2x\0";
+
+const char we_wish_you_a_merry_christmas_soprano[] PROGMEM = 
+  "3f1f4b'2b'c*b'a4gggc*2c*d*c*b'4affd*2d*e'*d*c*4b'g2ff4gc*a8b'4fb'b'b'8a4ab'ag8f4c*d*2c*c*b'b'4f*f2ff4gc*a8b'\0";
+const char we_wish_you_a_merry_christmas_alto[] PROGMEM=
+  "3f1f4f2de'ff4e'B'gg2efgg4fccd2f#gaa4gd2ffe'gf8f4ff2de'fg8a4f#gfe8f4a2ff#f#gg4af2ff4e'gf8f\0";
+const char we_wish_you_a_merry_christmas_tenor[] PROGMEM =
+"3f1f4f2ffb'b'4b'gbc*2ggc*c*4c*aaa2aad*d*4d*b'2b'b'4b'e'*c*8d*2f*e'*d*c*b'c*d*e'*8f*4agc*2c*b'8a4f*f*2c*c*d*e'*4f*a2b'b'4b'2e'*d*4c*8d*\0";
+const char we_wish_you_a_merry_christmas_bass[] PROGMEM =
+"3f1f4d2B'B'dd4e'e'ge2cce'e'4ffaf#2ddff4gg2dd4e'cf8B4fb'b'B'8f4dgc*c8f4fb'2aagg4f2fe'dd4e'cf8B'\0";
+
+const char chessnuts_roasting_on_an_open_fire[] PROGMEM =
+"2e'e'*1d*c*b'a'gg6g2e'c*b'a'gf8e'x2e'e'1ffe'f2gb'c*3d*1c*2bb1d'*c*b'a'4b'1b'a'gf2e'e'*1d*c*b'a'gg6g2e'c*1b'a'gf8e'2e'e'f1e'f2gb'c*3d*1c*b'gc*b'3a'1e'4e'1xe'de'5d'*1c*b'a4b'1xe'de'd'*cd'*c*d'*c*b'a'4b'1xe'de'bb'3c*1b'a'g'5a'1g'a'g'f3f1ff2fff6f1xg2e'e'*2d*c*b'a'gg4g1xg2e'c*b'a'gf6e'1xd2e'1de'2f1e'f2g1b'c*2d*1e'*c*2b'4e'2f4e'x\0";
+
 const Song songs[NUM_SONGS] PROGMEM = {
     {
         // Adeste Fideles
@@ -117,11 +135,28 @@ const Song songs[NUM_SONGS] PROGMEM = {
         veselje_ti_navjescujem_tenor,
         veselje_ti_navjescujem_bass,
     },
+    {
+        // U to vrijeme godišta
+        u_to_vrijeme_godista_soprano,
+        u_to_vrijeme_godista_alto,
+    },
+    {
+        // We Wish You a Merry Christmas
+        we_wish_you_a_merry_christmas_soprano,
+        we_wish_you_a_merry_christmas_alto,
+        we_wish_you_a_merry_christmas_tenor,
+        we_wish_you_a_merry_christmas_bass,
+    },
+    {
+        // Chestnuts Roasting on an Open Fire
+        chessnuts_roasting_on_an_open_fire,
+    }
 };
 
 Song song;
 int song_index = -1;
 int diode;
+bool is_button_pressed = false;
 
 void setup()
 {
@@ -130,10 +165,11 @@ void setup()
     pinMode(ALL_LEDS[i], OUTPUT);
   }
   pinMode(SPEAKER, OUTPUT);
+  pinMode(BUTTON, INPUT);
   pinMode(A0, INPUT);
   randomSeed(analogRead(0));
 
-  choose_song();
+  cycle_songs();
   diode = random(0, NUM_LEDS);
   reset_playback();
 }
@@ -155,17 +191,18 @@ void loop()
     diode = random(0, NUM_LEDS);
   } while (diode == olDdiode);
 
-  if (is_finished())
+  is_button_pressed = digitalRead(BUTTON) == HIGH;
+  if (is_finished() || is_button_pressed)
   {
     // The song finished, so we are picking a new one
-    choose_song();
+    cycle_songs();
     reset_playback();
   }
 }
 
-void choose_song()
+void cycle_songs()
 {
-  song_index = (song_index + 1) % NUM_SONGS;
+  song_index = random(0, NUM_SONGS);
   is_single_note = random(0, 2);
   free(song.soprano);
   free(song.alto);
@@ -272,7 +309,8 @@ void play_multiple()
   if (bass.frequency && bass.remaining)
     audible_notes++;
 
-  auto DELAY = NEUMA / 4;
+  auto DELAY = audible_notes ? NEUMA / audible_notes : NEUMA;
+
   if(!audible_notes) delay(NEUMA);
   else for (int remaining_in_strum = 0; remaining_in_strum < shortest_remaining; remaining_in_strum += DELAY * audible_notes)
   {
