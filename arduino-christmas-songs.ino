@@ -1,7 +1,7 @@
 #define SPEAKER 11
 #define BUTTON 6
 #define NUM_LEDS 8
-#define NUM_SONGS 9
+#define NUM_SONGS 10
 #define NEUMA 500 / 4
 
 struct Note
@@ -22,10 +22,13 @@ struct Song
 
 void play_single();
 void play_multiple();
+template <typename T>
+void shuffle_array(T array, int size);
 
 const int ALL_LEDS[NUM_LEDS] = {5, 4, 3, 2, PIN_A0, PIN_A1, PIN_A2, PIN_A3};
 
-const int twelve_tet[12] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494};
+const int twelve_tet_base[12] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494};
+int twelve_tet[12] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494};
 
 Note soprano;
 Note alto;
@@ -33,6 +36,7 @@ Note tenor;
 Note bass;
 
 bool is_single_note;
+bool is_parts_shuffled;
 
 const char adeste_fideles_soprano[] PROGMEM = "2a4a2ea4be2c#*bc#*d*4c#*2ba4a2g#f#g#abc#*4g#2f#1e8e4e*2d*c#*4d*c#*2bc#*ab2g#1f#12e2aag#ab4a2ec#*c#*bc#*d*4c#*2bc#*d*c#*ba4g#2ad*4c#*3b1a6a\0";
 const char adeste_fideles_alto[] PROGMEM = "2e4e2ec#4ee2eeef#4e2ec#c#d#ed#eeee4e3d#1e8e4e1f#g#2af#g#4a2eef#f#4e2e2x8xxx6x2a1f#g#2aed#4e2ef#4e3e1c#6c#\0";
@@ -83,17 +87,20 @@ const char u_to_vrijeme_godista_soprano[] PROGMEM =
 const char u_to_vrijeme_godista_alto[] PROGMEM =
     "6xx4B'2B4A2x4A2A4B'2B'4B'2B'4A2x6xx4B'2B4A2x4A2A4B'2B'4B'2B'4A2x2dcfgfe4d2e4f2x4c2d4B'2B'4c2c4f2x\02dcfgfe4d2e4f2x4c2d4B'2B'4c2c4f2x\0";
 
-const char we_wish_you_a_merry_christmas_soprano[] PROGMEM = 
-  "3f1f4b'2b'c*b'a4gggc*2c*d*c*b'4affd*2d*e'*d*c*4b'g2ff4gc*a8b'4fb'b'b'8a4ab'ag8f4c*d*2c*c*b'b'4f*f2ff4gc*a8b'\0";
-const char we_wish_you_a_merry_christmas_alto[] PROGMEM=
-  "3f1f4f2de'ff4e'B'gg2efgg4fccd2f#gaa4gd2ffe'gf8f4ff2de'fg8a4f#gfe8f4a2ff#f#gg4af2ff4e'gf8f\0";
+const char we_wish_you_a_merry_christmas_soprano[] PROGMEM =
+    "3f1f4b'2b'c*b'a4gggc*2c*d*c*b'4affd*2d*e'*d*c*4b'g2ff4gc*a8b'4fb'b'b'8a4ab'ag8f4c*d*2c*c*b'b'4f*f2ff4gc*a8b'\0";
+const char we_wish_you_a_merry_christmas_alto[] PROGMEM =
+    "3f1f4f2de'ff4e'B'gg2efgg4fccd2f#gaa4gd2ffe'gf8f4ff2de'fg8a4f#gfe8f4a2ff#f#gg4af2ff4e'gf8f\0";
 const char we_wish_you_a_merry_christmas_tenor[] PROGMEM =
-"3f1f4f2ffb'b'4b'gbc*2ggc*c*4c*aaa2aad*d*4d*b'2b'b'4b'e'*c*8d*2f*e'*d*c*b'c*d*e'*8f*4agc*2c*b'8a4f*f*2c*c*d*e'*4f*a2b'b'4b'2e'*d*4c*8d*\0";
+    "3f1f4f2ffb'b'4b'gbc*2ggc*c*4c*aaa2aad*d*4d*b'2b'b'4b'e'*c*8d*2f*e'*d*c*b'c*d*e'*8f*4agc*2c*b'8a4f*f*2c*c*d*e'*4f*a2b'b'4b'2e'*d*4c*8d*\0";
 const char we_wish_you_a_merry_christmas_bass[] PROGMEM =
-"3f1f4d2B'B'dd4e'e'ge2cce'e'4ffaf#2ddff4gg2dd4e'cf8B4fb'b'B'8f4dgc*c8f4fb'2aagg4f2fe'dd4e'cf8B'\0";
+    "3f1f4d2B'B'dd4e'e'ge2cce'e'4ffaf#2ddff4gg2dd4e'cf8B4fb'b'B'8f4dgc*c8f4fb'2aagg4f2fe'dd4e'cf8B'\0";
 
 const char chessnuts_roasting_on_an_open_fire[] PROGMEM =
-"2e'e'*1d*c*b'a'gg6g2e'c*b'a'gf8e'x2e'e'1ffe'f2gb'c*3d*1c*2bb1d'*c*b'a'4b'1b'a'gf2e'e'*1d*c*b'a'gg6g2e'c*1b'a'gf8e'2e'e'f1e'f2gb'c*3d*1c*b'gc*b'3a'1e'4e'1xe'de'5d'*1c*b'a4b'1xe'de'd'*cd'*c*d'*c*b'a'4b'1xe'de'bb'3c*1b'a'g'5a'1g'a'g'f3f1ff2fff6f1xg2e'e'*2d*c*b'a'gg4g1xg2e'c*b'a'gf6e'1xd2e'1de'2f1e'f2g1b'c*2d*1e'*c*2b'4e'2f4e'x\0";
+    "2e'e'*1d*c*b'a'gg6g2e'c*b'a'gf8e'x2e'e'1ffe'f2gb'c*3d*1c*2bb1d'*c*b'a'4b'1b'a'gf2e'e'*1d*c*b'a'gg6g2e'c*1b'a'gf8e'2e'e'f1e'f2gb'c*3d*1c*b'gc*b'3a'1e'4e'1xe'de'5d'*1c*b'a4b'1xe'de'd'*cd'*c*d'*c*b'a'4b'1xe'de'bb'3c*1b'a'g'5a'1g'a'g'f3f1ff2fff6f1xg2e'e'*2d*c*b'a'gg4g1xg2e'c*b'a'gf6e'1xd2e'1de'2f1e'f2g1b'c*2d*1e'*c*2b'4e'2f4e'x\0";
+
+const char santa_claus_is_coming_to_town_soprano[] PROGMEM =
+    "1fde'2f3f1f1ga2b'4b'1de'2fff1gf2e'4e'2dfB'dc4e'2A8B'\0";
 
 const Song songs[NUM_SONGS] PROGMEM = {
     {
@@ -150,7 +157,11 @@ const Song songs[NUM_SONGS] PROGMEM = {
     {
         // Chestnuts Roasting on an Open Fire
         chessnuts_roasting_on_an_open_fire,
-    }
+    },
+    {
+        // Santa Claus is Coming to Town
+        santa_claus_is_coming_to_town_soprano,
+    },
 };
 
 Song song;
@@ -202,8 +213,10 @@ void loop()
 
 void cycle_songs()
 {
+  transpose_steps(random(0, 12), random(0, 2));
   song_index = random(0, NUM_SONGS);
   is_single_note = random(0, 2);
+  is_parts_shuffled = random(0, 2);
   free(song.soprano);
   free(song.alto);
   free(song.tenor);
@@ -298,6 +311,7 @@ void play_single()
 void play_multiple()
 {
   auto shortest_remaining = shortest_positive(soprano.remaining, alto.remaining, tenor.remaining, bass.remaining);
+  auto longest_remaining = max(max(soprano.remaining, alto.remaining), max(tenor.remaining, bass.remaining));
 
   auto audible_notes = 0;
   if (soprano.frequency && soprano.remaining)
@@ -309,35 +323,26 @@ void play_multiple()
   if (bass.frequency && bass.remaining)
     audible_notes++;
 
-  auto DELAY = audible_notes ? NEUMA / audible_notes : NEUMA;
+  int DELAY = audible_notes ? NEUMA / audible_notes : NEUMA;
 
-  if(!audible_notes) delay(NEUMA);
-  else for (int remaining_in_strum = 0; remaining_in_strum < shortest_remaining; remaining_in_strum += DELAY * audible_notes)
-  {
-    if (bass.frequency && bass.remaining)
-    {
-      tone(SPEAKER, bass.frequency / 2);
-      delay(DELAY);
-    }
+  Note *parts[] = {&bass, &tenor, &alto, &soprano};
+  if (is_parts_shuffled)
+    shuffle_array(parts, 4);
 
-    if (tenor.frequency && tenor.remaining)
+  if (!audible_notes)
+    delay(NEUMA);
+  else
+    for (int remaining_in_strum = 0; remaining_in_strum < shortest_remaining; remaining_in_strum += DELAY * audible_notes)
     {
-      tone(SPEAKER, tenor.frequency / 2);
-      delay(DELAY);
+      for (auto part : parts)
+      {
+        if (part->frequency && part->remaining)
+        {
+          tone(SPEAKER, part->frequency);
+          delay(DELAY);
+        }
+      }
     }
-
-    if (alto.frequency && alto.remaining)
-    {
-      tone(SPEAKER, alto.frequency);
-      delay(DELAY);
-    }
-
-    if (soprano.frequency && soprano.remaining)
-    {
-      tone(SPEAKER, soprano.frequency);
-      delay(DELAY);
-    }
-  }
 
   bass.remaining = max(0, bass.remaining - NEUMA);
   tenor.remaining = max(0, tenor.remaining - NEUMA);
@@ -364,13 +369,13 @@ int shortest_positive(int a, int b, int c, int d)
 
 void parse_next_note()
 {
-  parse_next(soprano);
-  parse_next(alto);
-  parse_next(tenor);
-  parse_next(bass);
+  parse_next(soprano, 1);
+  parse_next(alto, 1);
+  parse_next(tenor, 2);
+  parse_next(bass, 2);
 }
 
-void parse_next(Note &note)
+void parse_next(Note &note, int octave_coefficient)
 {
   if (note.current == NULL || note.remaining)
   {
@@ -396,7 +401,7 @@ void parse_next(Note &note)
     }
     if (is_note(note.current))
     {
-      note.frequency = twelve_tet_frequency(note.current);
+      note.frequency = twelve_tet_frequency(note.current) / octave_coefficient;
       note.remaining = note.current_duration;
     }
     note.current++;
@@ -492,4 +497,34 @@ void reset_playback()
   alto.current = song.alto;
   tenor.current = song.tenor;
   bass.current = song.bass;
+}
+
+void transpose_steps(int steps, bool up)
+{
+  for (int i = 0; i < 12; i++)
+  {
+    if (up)
+    {
+      auto multiplicator = (i + steps) > 11 ? 2 : 1;
+      twelve_tet[i] = twelve_tet_base[(i + steps) % 12] * multiplicator;
+    }
+    else
+    {
+      auto divisor = (i - steps) < 0 ? 2 : 1;
+      twelve_tet[i] = twelve_tet_base[(12 - steps + i) % 12] / divisor;
+    }
+  }
+}
+
+// Generic function that shuffles an array
+template <typename T>
+void shuffle_array(T array, int size)
+{
+  for (int i = 0; i < size; i++)
+  {
+    auto j = random(0, size);
+    auto temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
 }
